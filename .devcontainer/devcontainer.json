@@ -1,0 +1,38 @@
+{
+    "name": "Terraform Dev Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/terraform:1.3.8": {
+            "version": "1.10.3",
+            "tflint": "0.54.0",
+            "terragrunt": "none"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-azuretools.vscode-docker",
+                "exiasr.hadolint",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "hashicorp.terraform",
+                "4ops.terraform"
+            ]
+        }
+    },
+    "forwardPorts": [
+        3000
+    ],
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "direnv hook bash >> ~/.bashrc"
+}
