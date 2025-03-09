@@ -48,3 +48,20 @@ module "vpc" {
     Environment = "dev"
   }
 }
+
+module "gitlab" {
+  source = "../../modules/gitlab"
+
+  vpc_id            = module.vpc.vpc_id
+  subnet_id         = module.vpc.private_subnet_ids[0]
+  availability_zone = local.availability_zones[0]
+  admin_cidr_blocks = "0.0.0.0/0" # 本番環境では適切なCIDRブロックに制限すべき
+  environment       = "dev"
+  domain_name       = "gitlab.${local.domain_name}"
+
+  instance_type = "t3.large"
+  key_name      = "gitlab-key" # 既存のキーペア名を指定
+
+  ebs_volume_size  = 100
+  root_volume_size = 20
+}

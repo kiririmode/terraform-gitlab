@@ -1,0 +1,32 @@
+#!/bin/bash -x
+
+sudo yum install -y curl policycoreutils-python openssh-server openssh-clients perl
+# Enable OpenSSH server daemon if not enabled: sudo systemctl status sshd
+sudo systemctl enable sshd
+sudo systemctl start sshd
+# Check if opening the firewall is needed with: sudo systemctl status firewalld
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo systemctl reload firewalld
+
+# GitLabパッケージリポジトリを追加してパッケージをインストール
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+
+# TODO: ここから先を userdata で流すとなぜかハングするので、手動で実行する
+
+
+# sudo EXTERNAL_URL="https://${domain_name}" yum install -y gitlab-ce
+# # List available versions: sudo yum --showduplicate list
+# # Specify version: sudo yum install gitlab-ee-16.1.4-ee.0.el7.x86_64
+# # Pin the version to limit auto-updates: yum versionlock gitlab-ee*
+             
+# # EBSボリュームのマウント
+# mkfs -t ext4 ${ebs_path}
+# mkdir -p /var/opt/gitlab
+# mount ${ebs_path} /var/opt/gitlab
+              
+# # fstabへの追加
+# echo "${ebs_path} /var/opt/gitlab ext4 defaults,nofail 0 2" >> /etc/fstab
+              
+# # GitLab設定の更新
+# gitlab-ctl reconfigure
